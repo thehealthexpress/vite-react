@@ -1,19 +1,29 @@
 
+// File: /api/order.js
 import fs from 'fs';
+import path from 'path';
 
 export default function handler(req, res){
-  if(req.method==='POST'){
+  if(req.method !== 'POST') return res.status(405).json({status:'error', message:'Method not allowed'});
+  try{
     const order = req.body;
-    const filePath = './orders.json';
+    // very basic validation
+    if(!order || !order.items || !order.address) return res.status(400).json({status:'error', message:'Invalid order'});
+
+    // Save to orders.json in repo root (for demo). On some serverless providers file writes may be ephemeral.
+    const filePath = path.join(process.cwd(), 'orders.json');
     let orders = [];
     if(fs.existsSync(filePath)){
-      const data = fs.readFileSync(filePath);
-      orders = JSON.parse(data);
+      const raw = fs.readFileSync(filePath, 'utf8');
+      orders = JSON.parse(raw || '[]');
     }
-    orders.push({...order, id:Date.now()});
-    fs.writeFileSync(filePath, JSON.stringify(orders,null,2));
-    res.status(200).json({status:'success', message:'Order saved'});
-  } else {
-    res.status(405).json({status:'error', message:'Method not allowed'});
+    const id = Date.now().toString(36);
+    orders.push({...order, id});
+    fs.writeFileSync(filePath, JSON.stringify(orders, null, 2));
+    return res.status(200).json({status:'success', message:'Order saved', id});
+  } catch(e){
+    console.error(e);
+    return res.status(500).json({status:'error', message:'Server error'});
   }
-}
+  }
+                                              
