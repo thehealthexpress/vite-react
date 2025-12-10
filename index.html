@@ -1,49 +1,122 @@
-YPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>The Health Express</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-    }
-    .container {
-      padding: 40px 20px;
-    }
-    h1 {
-      color: #22c55e;
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 16px;
-      color: #cbd5f5;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 15px 25px;
-      background: #22c55e;
-      color: #042f2e;
-      text-decoration: none;
-      font-size: 18px;
-      border-radius: 10px;
-      font-weight: bold;
-    }
-    .footer {
-      margin-top: 40px;
-      font-size: 12px;
-      color: #94a3b8;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Health Express</title>
+<style>
+body { font-family: Arial; margin:0; padding:0; background:#f2f2f2; }
+header { background:#4CAF50; color:white; padding:20px; text-align:center; }
+.menu { display:flex; flex-wrap:wrap; padding:20px; justify-content:center; }
+.item { background:white; border:1px solid #ccc; border-radius:5px; margin:10px; padding:15px; width:200px; text-align:center; }
+.cart { position:fixed; top:20px; right:20px; border:1px solid #333; padding:10px; background:white; width:250px; }
+button { padding:5px 10px; margin-top:5px; cursor:pointer; }
+input { width:100%; margin:5px 0; padding:5px; }
+</style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>The Health Express
+<header>
+  <h1>The Health Express</h1>
+</header>
+
+<div class="menu" id="menu">
+  <!-- Menu items dynamically added here -->
+</div>
+
+<div class="cart">
+  <h3>Cart</h3>
+  <div id="cartItems">No items yet</div>
+  <p>Total: ₹<span id="total">0</span></p>
+  <h4>Checkout</h4>
+  <input type="text" id="name" placeholder="Your Name">
+  <input type="text" id="phone" placeholder="Phone Number">
+  <input type="text" id="address" placeholder="Address">
+  <button onclick="placeOrder()">Place Order (COD)</button>
+  <p id="orderMsg" style="color:green;"></p>
+</div>
+
+<script>
+// Menu items
+const menu = [
+  {name:"Grilled Chicken Salad", price:250},
+  {name:"Quinoa Bowl", price:200},
+  {name:"Veg Sandwich", price:150},
+  {name:"Smoothie", price:100},
+  {name:"Paneer Wrap", price:180}
+];
+
+const cart = [];
+
+function showMenu() {
+  const menuDiv = document.getElementById('menu');
+  menu.forEach((item, index)=>{
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'item';
+    itemDiv.innerHTML = `<h3>${item.name}</h3><p>₹${item.price}</p>
+    <button onclick="addToCart(${index})">Add to Cart</button>`;
+    menuDiv.appendChild(itemDiv);
+  });
+}
+
+function addToCart(index){
+  cart.push(menu[index]);
+  updateCart();
+}
+
+function updateCart(){
+  const cartItemsDiv = document.getElementById('cartItems');
+  let total = 0;
+  if(cart.length===0){ cartItemsDiv.innerHTML="No items yet"; }
+  else{
+    cartItemsDiv.innerHTML = "";
+    cart.forEach(i=>{
+      cartItemsDiv.innerHTML += `<div>${i.name} - ₹${i.price}</div>`;
+      total += i.price;
+    });
+  }
+  document.getElementById('total').innerText = total;
+}
+
+async function placeOrder(){
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const address = document.getElementById('address').value.trim();
+  
+  if(!name || !phone || !address || cart.length===0){
+    alert("Please fill all details and add items to cart!");
+    return;
+  }
+  
+  const orderData = {name, phone, address, items:cart, total: cart.reduce((a,b)=>a+b.price,0)};
+  
+  try{
+    // Call Vercel serverless function
+    const response = await fetch('/api/order', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(orderData)
+    });
+    const result = await response.json();
+    if(result.status==="success"){
+      document.getElementById('orderMsg').innerText = "Order placed successfully!";
+      cart.length=0;
+      updateCart();
+      document.getElementById('name').value='';
+      document.getElementById('phone').value='';
+      document.getElementById('address').value='';
+    } else {
+      alert("Error placing order!");
+    }
+  }catch(err){
+    alert("Error connecting to server!");
+  }
+}
+
+showMenu();
+</script>
+
+</body>
+</html>
+
 
