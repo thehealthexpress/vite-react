@@ -1,11 +1,11 @@
-// File: /api/order.js
+
 import fs from 'fs';
+
 export default function handler(req, res){
   if(req.method==='POST'){
     const order = req.body;
-    // Save orders to file (simple demo)
     const filePath = './orders.json';
-    let orders=[];
+    let orders = [];
     if(fs.existsSync(filePath)){
       const data = fs.readFileSync(filePath);
       orders = JSON.parse(data);
@@ -16,5 +16,4 @@ export default function handler(req, res){
   } else {
     res.status(405).json({status:'error', message:'Method not allowed'});
   }
-  }
-
+}
