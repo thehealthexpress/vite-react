@@ -1,62 +1,88 @@
 /* FORCE RESET */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* BODY */
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
   background: #f2f2f2;
-  color: #000 !important;
+  color: #000;
 }
 
-/* ALL TEXT BLACK FIX */
-h1, h2, h3, h4, h5, h6,
-p, span, div, small, strong {
-  color: #000 !important;
-}
+/* REMOVE GLOBAL DIV COLOR FORCE (important) */
+/* Ye hata diya kyunki ye layout disturb karta hai */
 
-/* MENU CARD FIX */
-div {
-  color: #000 !important;
-}
-
-/* CARD STYLE */
-.menu,
-.menu-item,
-.card,
-.item {
-  background: #ffffff !important;
-  border-radius: 12px;
-  padding: 10px;
-}
-
-/* IMAGE FIX */
-img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  display: block;
-}
-
-/* ADD BUTTON */
-button {
-  background: #1aa34a !important;
-  color: #fff !important;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-/* GRID FIX (2 ITEMS PER ROW) */
+/* CARD CONTAINER */
 .menu,
 .items,
 .container {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 14px !important;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  
+  gap: 20px;
+  padding: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .menu,
+  .items,
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .menu,
+  .items,
+  .container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* CARD STYLE */
+.menu-item,
+.card,
+.item {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.menu-item:hover,
+.card:hover,
+.item:hover {
+  transform: translateY(-5px);
+}
+
+/* IMAGE */
+img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* BUTTON */
+button {
+  background: #1aa34a;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #148a3d;
 }
 
 /* IMAGE NOT FOUND FIX */
@@ -64,4 +90,3 @@ img[src*="imgbb"],
 img:not([src]) {
   display: none;
 }
-
