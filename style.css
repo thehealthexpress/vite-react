@@ -1,73 +1,67 @@
-/* RESET */
+/* FORCE RESET */
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 /* BODY */
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
   background: #f2f2f2;
-  color: #000;
+  color: #000 !important;
 }
 
-/* MAIN CONTAINER (IMPORTANT - Sirf is class ko use karo JSX me) */
-.menu-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 20px;
+/* ALL TEXT BLACK FIX */
+h1, h2, h3, h4, h5, h6,
+p, span, div, small, strong {
+  color: #000 !important;
 }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
-  .menu-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* MENU CARD FIX */
+div {
+  color: #000 !important;
 }
 
-@media (max-width: 600px) {
-  .menu-container {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-/* CARD */
-.card {
-  background: #ffffff;
+/* CARD STYLE */
+.menu,
+.menu-item,
+.card,
+.item {
+  background: #ffffff !important;
   border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  transition: 0.3s;
+  padding: 10px;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* TEXT FIX */
-.card h3,
-.card p {
-  color: #000;
-}
-
-/* IMAGE */
-.card img {
+/* IMAGE FIX */
+img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: auto;
   border-radius: 10px;
-  margin-bottom: 10px;
+  display: block;
 }
 
-/* BUTTON */
+/* ADD BUTTON */
 button {
-  background: #1aa34a;
-  color: #fff;
+  background: #1aa34a !important;
+  color: #fff !important;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 6px;
-  cursor: pointer;
+  font-weight: bold;
 }
+
+/* GRID FIX (2 ITEMS PER ROW) */
+.menu,
+.items,
+.container {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 14px !important;
+}
+
+/* IMAGE NOT FOUND FIX */
+img[src*="imgbb"],
+img:not([src]) {
+  display: none;
+}                                       
 
