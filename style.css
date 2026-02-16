@@ -1,4 +1,4 @@
-/* FORCE RESET */
+/* RESET */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,60 +12,52 @@ body {
   color: #000;
 }
 
-/* REMOVE GLOBAL DIV COLOR FORCE (important) */
-/* Ye hata diya kyunki ye layout disturb karta hai */
-
-/* CARD CONTAINER */
-.menu,
-.items,
-.container {
+/* MAIN CONTAINER (IMPORTANT - Sirf is class ko use karo JSX me) */
+.menu-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);  
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 20px;
 }
 
 /* RESPONSIVE */
 @media (max-width: 992px) {
-  .menu,
-  .items,
-  .container {
+  .menu-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
-  .menu,
-  .items,
-  .container {
+  .menu-container {
     grid-template-columns: repeat(1, 1fr);
   }
 }
 
-/* CARD STYLE */
-.menu-item,
-.card,
-.item {
+/* CARD */
+.card {
   background: #ffffff;
   border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  transition: 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: 0.3s;
 }
 
-.menu-item:hover,
-.card:hover,
-.item:hover {
+.card:hover {
   transform: translateY(-5px);
 }
 
+/* TEXT FIX */
+.card h3,
+.card p {
+  color: #000;
+}
+
 /* IMAGE */
-img {
+.card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   border-radius: 10px;
-  display: block;
   margin-bottom: 10px;
 }
 
@@ -76,17 +68,6 @@ button {
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
-  font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-button:hover {
-  background: #148a3d;
-}
-
-/* IMAGE NOT FOUND FIX */
-img[src*="imgbb"],
-img:not([src]) {
-  display: none;
-}
