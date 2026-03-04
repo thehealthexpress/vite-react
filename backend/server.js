@@ -1,26 +1,28 @@
 import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
 import dotenv from "dotenv";
+import cors from "cors";
+import { connectDB } from "./config/db.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
-const app = express();
+connectDB();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
-
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/address", addressRoutes);
+app.use("/api/admin", adminRoutes);
 
-app.listen(5000, () => console.log("Server running on 5000"));
+app.use(errorHandler);
+
+app.listen(5000, () => console.log("Server running"));
